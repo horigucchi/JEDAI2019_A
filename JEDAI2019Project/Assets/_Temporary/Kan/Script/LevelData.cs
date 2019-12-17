@@ -10,20 +10,7 @@ public class LevelData : ScriptableObject
 
     List<WaveData> Waves;
 
-}
-
-
-[CreateAssetMenu(fileName = "FlyObjectStatus.asset", menuName = "FlyObject/WaveAsset", order = 30)]
-public class WaveData : ScriptableObject
-{
-
-    public uint WaveNomber;
-    public uint SpawnTime;
-
-    public FlyObjectData[] flyObjects = new FlyObjectData[5];
-
-
-
-
 
 }
+
+
