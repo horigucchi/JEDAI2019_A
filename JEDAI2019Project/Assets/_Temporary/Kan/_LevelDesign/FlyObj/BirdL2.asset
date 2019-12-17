@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 827d61dd63e5fbc49bb1a7b82b1a7a7c, type: 3}
-  m_Name: Ring
+  m_Name: BirdL2
   m_EditorClassIdentifier: 
   ObjName: 
-  ObjType: 2
-  Speed: 3
-  Point: 6
-  StartPosition: 999
-  sprite: {fileID: 21300000, guid: bae6a49951481ce488f50a06158300a8, type: 3}
-  FlyObjPrefab: {fileID: 2805176851617538878, guid: 7563fb2b08b93bd43a97834254bfc140,
+  ObjType: 1
+  Speed: 10
+  Point: 0
+  sprite: {fileID: 21300000, guid: be51c0ca891bb234ab5243abbe6183bd, type: 3}
+  FlyObjPrefab: {fileID: 1464645511330847998, guid: be1fe16ce2da2cc419e30ee47477bfdb,
     type: 3}

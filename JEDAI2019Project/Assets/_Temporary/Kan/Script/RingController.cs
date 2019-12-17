@@ -19,4 +19,13 @@ public class RingController : AFlyObject
     {
         rb.velocity = MoveDirection.normalized * Status.Speed;
     }
+
+    /// <summary>
+    /// AnimationEvent用
+    /// </summary>
+    public void DestroySelf()
+    {
+        Destroy(this.gameObject);
+    }
+
 }

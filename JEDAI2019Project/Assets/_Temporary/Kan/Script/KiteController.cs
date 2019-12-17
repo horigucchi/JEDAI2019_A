@@ -24,6 +24,9 @@ public class KiteController : AFlyObject
     public Bounds Bounds { get => bounds; private set => bounds = value; }
     public float Acceleration { get => acceleration; set => acceleration = value; }
 
+    public bool CanMove { get; set; }
+
+
     void Start()
     {
         if (controller == null)
@@ -37,6 +40,8 @@ public class KiteController : AFlyObject
                 Debug.LogError("Rollerを指定してください。");
             }
         }
+
+        CanMove = true;
     }
 
 
@@ -49,20 +54,36 @@ public class KiteController : AFlyObject
 
     private void FixedUpdate()
     {
-
-
-        if(controller.RollingSpeed>0)
-            AddForce(new Vector2(0, 1));
-        if (controller.RollingSpeed < 0)
-            AddForce(new Vector2(0, -1));
-        if (controller.IsRolling == false)
-            AddForce(new Vector2(0, 0));
-
+        if (CanMove == true)
+        {
+            RollCheck();
 #if UNITY_EDITOR
 
-        //MoveCheck();
-
+            MoveCheck();
 #endif
+        }
+    }
+
+    public void RollCheck()
+    {
+        switch (controller.YarnState)
+        {
+            case Horiguchi.EYarnState.forwardRolling:
+                AddForce(new Vector2(0, 1));
+                break;
+            case Horiguchi.EYarnState.reverseRolling:
+                AddForce(new Vector2(0, -1));
+                break;
+            case Horiguchi.EYarnState.hold:
+                AddForce(new Vector2(0, 0));
+                break;
+            case Horiguchi.EYarnState.letGo:
+                AddForce(new Vector2(0, -0.5f));
+                break;
+            default:
+                break;
+        }
+           
     }
 
 
@@ -71,8 +92,17 @@ public class KiteController : AFlyObject
         
         Vector2 velocity = rb.velocity;
 
-        velocity +=  force * Acceleration * Time.deltaTime;
-       
+        if(velocity.y<0 && force.y > 0)
+        {
+            velocity.y = 0;
+        }
+        if (velocity.y > 0 && force.y < 0)
+        {
+            velocity.y = 0;
+        }
+
+        velocity += force * Acceleration * Time.deltaTime;
+
         if (force.x == 0)
         {
             velocity.x *= 0.98f;
@@ -94,14 +124,14 @@ public class KiteController : AFlyObject
         Vector2 velocity = rb.velocity;
 
         velocity += new Vector2(h, v) * Acceleration * Time.deltaTime;
-        if (h == 0)
-        {
-            velocity.x *= 0.98f;
-        }
-        if (v == 0)
-        {
-            velocity.y *= 0.98f;
-        }
+        //if (h == 0)
+        //{
+        //    velocity.x *= 0.98f;
+        //}
+        //if (v == 0)
+        //{
+        //    velocity.y *= 0.98f;
+        //}
         rb.velocity = velocity;
     }
 
@@ -147,6 +177,8 @@ public class KiteController : AFlyObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!CanMove) return;
+
         AFlyObject obj;
         obj = collision.GetComponent<AFlyObject>();
 
@@ -161,10 +193,17 @@ public class KiteController : AFlyObject
 
                 break;
             case ObjType.Bird:
+                CanMove = false;
+                bounds.yD = -12;
+                rb.velocity = new Vector2(0, -3);
+                GameManager.Instance.GameOver();
                 Debug.Log("鳥！");
                 break;
             case ObjType.Ring:
                 Debug.Log(obj.Status.Point + "Point!");
+                ScoreController.Instance.AddScore(obj.Status.Point);
+                Destroy(obj.gameObject,0.15f);
+                //obj.GetComponent<Animator>().enabled = true;
                 break;
             default:
                 break;

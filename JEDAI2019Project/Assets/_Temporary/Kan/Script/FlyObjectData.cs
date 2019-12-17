@@ -8,15 +8,13 @@ public enum ObjType
     Kite, Bird, Ring
 }
 
-[CreateAssetMenu(fileName = "FlyObjectStatus.asset", menuName = "FlyObjectAsset", order = 30)]
-
+[CreateAssetMenu(fileName = "FlyObjectStatus.asset", menuName = "FlyObject/FlyObjectAsset", order = 30)]
 public class FlyObjectData : ScriptableObject
 {
     public string ObjName;
     public ObjType ObjType;
     public float Speed;
-    public float Point;
-    public float StartPosition = 999f;
+    public int Point;
 
     public Sprite sprite;
     public GameObject FlyObjPrefab;
