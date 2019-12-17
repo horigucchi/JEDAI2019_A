@@ -6,7 +6,7 @@ Make this game for the GAMEJAM
 
 バージョン違いによるエラーなどをなくすため以下のようにする  
 
-Unity 2017.4.24f1  
+Unity 2018.4.10f1 
 VisualStudio2017  
 
 ### Gitのフォルダ構成
