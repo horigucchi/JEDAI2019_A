@@ -25,6 +25,10 @@ namespace Kan
         {
             float newPosition = Mathf.Repeat(Time.time * scrollSpeed, tileSizeX);
             transform.position = startPosition + Vector3.left * newPosition;
+            //if(newPosition <= 0.1f)
+            //{
+            //    Debug.Log(Time.timeSinceLevelLoad);
+            //}
         }
     }
 

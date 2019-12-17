@@ -18,12 +18,25 @@ public class KiteController : AFlyObject
     [SerializeField]
     Bounds bounds = new Bounds();
 
+    [SerializeField]
+    Horiguchi.YarnController controller;
+
     public Bounds Bounds { get => bounds; private set => bounds = value; }
     public float Acceleration { get => acceleration; set => acceleration = value; }
 
     void Start()
     {
-        
+        if (controller == null)
+        {
+            try
+            {
+                controller = GameObject.Find("Roller").GetComponent<Horiguchi.YarnController>();
+            }
+            catch (System.NullReferenceException)
+            {
+                Debug.LogError("Rollerを指定してください。");
+            }
+        }
     }
 
 
@@ -37,9 +50,17 @@ public class KiteController : AFlyObject
     private void FixedUpdate()
     {
 
+
+        if(controller.RollingSpeed>0)
+            AddForce(new Vector2(0, 1));
+        if (controller.RollingSpeed < 0)
+            AddForce(new Vector2(0, -1));
+        if (controller.IsRolling == false)
+            AddForce(new Vector2(0, 0));
+
 #if UNITY_EDITOR
 
-        MoveCheck();
+        //MoveCheck();
 
 #endif
     }
@@ -52,6 +73,14 @@ public class KiteController : AFlyObject
 
         velocity +=  force * Acceleration * Time.deltaTime;
        
+        if (force.x == 0)
+        {
+            velocity.x *= 0.98f;
+        }
+        if (force.y == 0)
+        {
+            velocity.y *= 0.98f;
+        }
         rb.velocity = velocity;
     }
 

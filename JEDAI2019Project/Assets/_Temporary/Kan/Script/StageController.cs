@@ -46,6 +46,10 @@ public class StageController : MonoBehaviour
         {
             CreateFlyObj(RingLevels[0],0);
         }
+
+
+
+
     }
 
     void SetScrollSpeed(float speed)

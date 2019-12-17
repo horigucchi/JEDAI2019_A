@@ -44,4 +44,23 @@ public class WindController : MonoBehaviour
             }
         }
     }
+
+    void WindUp()
+    {
+        rotZ.z -= rotSpeed * Time.deltaTime;
+        transform.rotation = Quaternion.Euler(rotZ);
+    }
+
+    void WindDown()
+    {
+        rotZ.z += rotSpeed * Time.deltaTime;
+        transform.rotation = Quaternion.Euler(rotZ);
+    }
+
+    void WindStronger()
+    {
+        var main = GetComponentInChildren<ParticleSystem>().main;
+        main.simulationSpeed *= 1.1f;
+    }
+
 }
