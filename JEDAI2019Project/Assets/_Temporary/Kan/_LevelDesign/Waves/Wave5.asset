@@ -15,8 +15,8 @@ MonoBehaviour:
   WaveNomber: 0
   SpawnTime: 0
   flyObjects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: cfa4eb42b5851e64dae0e9100f4586a6, type: 2}
+  - {fileID: 11400000, guid: b64fff66fc07245488f46ad46fb3ab93, type: 2}
+  - {fileID: 11400000, guid: cfa4eb42b5851e64dae0e9100f4586a6, type: 2}
+  - {fileID: 11400000, guid: b64fff66fc07245488f46ad46fb3ab93, type: 2}
   - {fileID: 0}

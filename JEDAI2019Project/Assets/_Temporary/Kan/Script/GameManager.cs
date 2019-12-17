@@ -14,8 +14,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    //凧Controller
     public KiteController player;
+    //
     public StageController stage;
+
+
     float levelTime;
 
 
@@ -30,7 +34,8 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
     }
-    // Start is called before the first frame update
+   
+
     void Start()
     {
         levelTime = 0;
@@ -38,7 +43,7 @@ public class GameManager : MonoBehaviour
         RetryButton.SetActive(false);
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 
@@ -57,26 +62,45 @@ public class GameManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// ステージクリア時の処理
+    /// </summary>
     void GameClear()
     {
-        
+        //背景スクロールを停止させる
         stage.ScrollSpeed = 0f;
+
+        //クリア文字を表示させる
         clear.enabled = true;
 
-
+        //プレイヤーの移動操作をやめさせて
         player.CanMove = false;
+
+        //凧を画面の右に移動させます
         player.AddForce(new Vector2(1, 0));
     }
 
+    /// <summary>
+    /// プレイヤーが死ぬ時の処理
+    /// </summary>
     public void GameOver()
     {
+        //リトライボタンを表示させる
         RetryButton.SetActive(true);
+        //一時停止ボタンを隠させる
         PauseButton.SetActive(false);
+        //Rollerを隠させる
         Horiguchi.YarnController.Instance.gameObject.SetActive(false);
+        //ステージクリアFlagをTrueにする
         stage.StageClear = true;
+
+        //背景スクロールを停止させる
         stage.ScrollSpeed = 0f;
     } 
 
+    /// <summary>
+    /// 今のSceneを再読み込み
+    /// </summary>
     public void Retry()
     {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);

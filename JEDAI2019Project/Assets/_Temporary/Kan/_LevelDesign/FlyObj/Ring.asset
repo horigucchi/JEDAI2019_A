@@ -15,7 +15,7 @@ MonoBehaviour:
   ObjName: Ring
   ObjType: 2
   Speed: 4
-  Point: 6
+  Point: 100
   sprite: {fileID: 21300000, guid: fa9f0fb60ac2f154abcbf7b236b39655, type: 3}
   FlyObjPrefab: {fileID: 2805176851617538878, guid: 7563fb2b08b93bd43a97834254bfc140,
     type: 3}
