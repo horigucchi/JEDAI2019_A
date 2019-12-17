@@ -9,13 +9,14 @@ namespace Kan
 
         private Vector3 startPosition;
 
+        [HideInInspector]
         public float scrollSpeed;
         private float tileSizeX;
 
         // Start is called before the first frame update
         void Start()
         {
-            tileSizeX = transform.localScale.x;
+            tileSizeX = transform.localScale.x * 2;
             startPosition = transform.position;
         }
 

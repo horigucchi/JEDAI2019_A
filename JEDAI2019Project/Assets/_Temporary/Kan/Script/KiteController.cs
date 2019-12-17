@@ -10,22 +10,20 @@ public class Bounds
 
 
 
-public class Move : MonoBehaviour
+public class KiteController : AFlyObject
 {
     [SerializeField]
     private float acceleration = 1f;
 
     [SerializeField]
     Bounds bounds = new Bounds();
-    
-    Rigidbody2D rb;
 
     public Bounds Bounds { get => bounds; private set => bounds = value; }
     public float Acceleration { get => acceleration; set => acceleration = value; }
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        
     }
 
 
@@ -33,7 +31,7 @@ public class Move : MonoBehaviour
     {
 
         BoundCheck();
-        
+        AnimationCheck();
     }
 
     private void FixedUpdate()
@@ -103,6 +101,45 @@ public class Move : MonoBehaviour
         rb.position = position;
     }
 
+    void AnimationCheck()
+    {
+        Vector3 rotZ = Vector3.zero;
+        rotZ.z = -30f;
+        if (rb.velocity.y > 3)
+        {
+            rotZ.z = 15f;
+        }
+        if (rb.velocity.y < -3)
+        {
+            rotZ.z = -75f;
+        }
+        transform.rotation = Quaternion.Euler(rotZ);
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        AFlyObject obj;
+        obj = collision.GetComponent<AFlyObject>();
+
+        if (obj == null)
+        {
+            return;
+        }
+
+        switch (obj.Status.ObjType)
+        {
+            case ObjType.Kite:
+
+                break;
+            case ObjType.Bird:
+                Debug.Log("鳥！");
+                break;
+            case ObjType.Ring:
+                Debug.Log(obj.Status.Point + "Point!");
+                break;
+            default:
+                break;
+        }
+    }
 
 }
