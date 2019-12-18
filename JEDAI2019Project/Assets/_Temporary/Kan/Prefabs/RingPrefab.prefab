@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2805176851617538879}
   - component: {fileID: 2805176851617538874}
   - component: {fileID: 2805176851617538875}
+  - component: {fileID: 1678639988644958607}
   m_Layer: 0
   m_Name: RingPrefab
   m_TagString: Untagged
@@ -49,6 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: {fileID: 11400000, guid: cfa4eb42b5851e64dae0e9100f4586a6, type: 2}
   MoveDirection: {x: -1, y: 0}
+  animator: {fileID: 0}
+  particle: {fileID: 0}
 --- !u!58 &2805176851617538874
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -86,6 +89,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &1678639988644958607
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2805176851617538878}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 528dbc7599be6334ab678e9fcbe6aaab, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7129022251537062754
 GameObject:
   m_ObjectHideFlags: 0
@@ -4930,9 +4952,9 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7505700163589244562}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 528dbc7599be6334ab678e9fcbe6aaab, type: 2}
+  m_Controller: {fileID: 9100000, guid: 30b03adf9e1150e43afcad4f14fe0443, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 2
   m_ApplyRootMotion: 0

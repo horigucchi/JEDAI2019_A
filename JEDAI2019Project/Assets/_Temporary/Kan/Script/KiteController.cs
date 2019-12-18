@@ -91,10 +91,10 @@ public class KiteController : AFlyObject
         switch (controller.YarnState)
         {
             case Horiguchi.EYarnState.forwardRolling:
-                AddForce(new Vector2(0, 1));
+                AddForce(new Vector2(0, -1));
                 break;
             case Horiguchi.EYarnState.reverseRolling:
-                AddForce(new Vector2(0, -1));
+                AddForce(new Vector2(0, 1));
                 break;
             case Horiguchi.EYarnState.hold:
                 AddForce(new Vector2(0, 0));
@@ -143,7 +143,7 @@ public class KiteController : AFlyObject
         velocity.y = Mathf.Clamp(velocity.y, -30f, 30f);
 
         rb.velocity = velocity;
-        text.text = "Speed:" + (int)velocity.y + " " + /*"加速度:" + acceleration*/ (-(int)controller.RollValue / 360f) + "回転"; 
+        text.text = "Speed:" + (int)velocity.y + " " + /*"加速度:" + acceleration*/ ((int)controller.RollValue / 360f) + "回転"; 
 
     }
 

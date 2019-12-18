@@ -15,7 +15,7 @@ public class RingController : AFlyObject
     public ParticleSystem particle;
     void Start()
     {
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
         particle = GetComponentInChildren<ParticleSystem>();
     }
 
