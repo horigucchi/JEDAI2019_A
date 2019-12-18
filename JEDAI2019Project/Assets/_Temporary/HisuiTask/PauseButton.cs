@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Button : MonoBehaviour
+public class PauseButton : MonoBehaviour
 {
     private bool pushFlag = false;
     public void OnClick()
     {
         pushFlag = !pushFlag;
         gameObject.SetActive(false);
+        Debug.Log("Push");
     }
 
     public bool GetFlag()

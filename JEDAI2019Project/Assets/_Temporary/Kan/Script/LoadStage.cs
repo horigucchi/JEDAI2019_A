@@ -4,8 +4,8 @@ using UnityEngine;
 
 public static class LoadStage
 {
-    
-    public static void LoadStageCSV(string fileName,List<WaveData> waves)
+
+    public static void LoadStageCSV(string fileName, List<WaveData> waves, int rowCount)
     {
         string dirStageFile = "Stages/" + fileName;
         string flyObjectDataFolder = "FlyObjects/"; 
@@ -19,14 +19,14 @@ public static class LoadStage
         for (int j = 0; j < frow.Length; j++)
         {
             waves.Add(item: ScriptableObject.CreateInstance<WaveData>());
-            for (int k = 0; k < 5; k++)
+            for (int k = 0; k < rowCount; k++)
             {
                 waves[j].flyObjects.Add(ScriptableObject.CreateInstance<FlyObjectData>());
                 //Debug.Log(waves[j].flyObjects.Count);
             }
         }
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < rowCount; i++)
         {
             string[] row = data[i].Split(new char[] { ',' });
             

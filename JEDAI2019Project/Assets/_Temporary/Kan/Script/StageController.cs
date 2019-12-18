@@ -56,7 +56,7 @@ public class StageController : MonoBehaviour
 
         if (level != null)
         {
-            LoadStage.LoadStageCSV(StageDataName, level.Waves);
+            LoadStage.LoadStageCSV(StageDataName, level.Waves, 5);
         }
 
 
