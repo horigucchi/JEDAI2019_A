@@ -59,16 +59,16 @@ public class GameManager : MonoBehaviour
         {
             //GameClear();
         }
+
+        
     }
 
 
     /// <summary>
     /// ステージクリア時の処理
     /// </summary>
-    void GameClear()
+    public void GameClear()
     {
-        //背景スクロールを停止させる
-        stage.ScrollSpeed = 0f;
 
         //クリア文字を表示させる
         clear.enabled = true;
@@ -94,8 +94,6 @@ public class GameManager : MonoBehaviour
         //ステージクリアFlagをTrueにする
         stage.StageClear = true;
 
-        //背景スクロールを停止させる
-        stage.ScrollSpeed = 0f;
     } 
 
     /// <summary>

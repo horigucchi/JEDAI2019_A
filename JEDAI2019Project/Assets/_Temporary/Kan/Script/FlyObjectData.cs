@@ -5,24 +5,23 @@ using UnityEditor;
 
 public enum ObjType
 {
-    Kite, Bird, Ring
+    Kite, Bird, Ring, Drone, Goal,
 }
 
 [CreateAssetMenu(fileName = "FlyObjectStatus.asset", menuName = "FlyObject/FlyObjectAsset", order = 30)]
 public class FlyObjectData : ScriptableObject
 {
-    [Tooltip("単位の名前")]
+    [Tooltip("オブジェクトの名前")]
     public string ObjName;
-    [Tooltip("単位の種類")]
+    [Tooltip("オブジェクトの種類")]
     public ObjType ObjType;
     [Tooltip("移動速度")]
     public float Speed;
-    [Tooltip("")]
+    [Tooltip("ゲットできる点数")]
     public int Point;
 
-    [Tooltip("")]
-    public Sprite sprite;
-    [Tooltip("")]
+    
+    [Tooltip("単位ののプレハブ")]
     public GameObject FlyObjPrefab;
 
 }

@@ -21,10 +21,22 @@ public class KiteController : AFlyObject
     [SerializeField]
     Horiguchi.YarnController controller;
 
+    [SerializeField]
+    RollerSprite roller;
+
     public Bounds Bounds { get => bounds; private set => bounds = value; }
     public float Acceleration { get => acceleration; set => acceleration = value; }
 
     public bool CanMove { get; set; }
+
+
+    Animator animator;
+
+    [SerializeField]
+    Sprite DamagedSprite;
+
+    SpriteRenderer renderer;
+
 
 
     void Start()
@@ -33,13 +45,16 @@ public class KiteController : AFlyObject
         {
             try
             {
-                controller = GameObject.Find("Roller").GetComponent<Horiguchi.YarnController>();
+                controller = Horiguchi.YarnController.Instance;
             }
             catch (System.NullReferenceException)
             {
                 Debug.LogError("Rollerを指定してください。");
             }
         }
+
+        animator = GetComponentInChildren<Animator>();
+        renderer = GetComponentInChildren<SpriteRenderer>();
 
         CanMove = true;
     }
@@ -50,10 +65,8 @@ public class KiteController : AFlyObject
 
         BoundCheck();
         AnimationCheck();
-    }
+        RollerAnimationCheck();
 
-    private void FixedUpdate()
-    {
         if (CanMove == true)
         {
             RollCheck();
@@ -62,6 +75,11 @@ public class KiteController : AFlyObject
             MoveCheck();
 #endif
         }
+    }
+
+    private void FixedUpdate()
+    {
+       
     }
 
     public void RollCheck()
@@ -95,6 +113,7 @@ public class KiteController : AFlyObject
         if(velocity.y<0 && force.y > 0)
         {
             velocity.y = 0;
+
         }
         if (velocity.y > 0 && force.y < 0)
         {
@@ -111,6 +130,9 @@ public class KiteController : AFlyObject
         {
             velocity.y *= 0.98f;
         }
+
+        velocity.y = Mathf.Clamp(velocity.y, -30f, 30f);
+
         rb.velocity = velocity;
     }
 
@@ -175,6 +197,35 @@ public class KiteController : AFlyObject
         transform.rotation = Quaternion.Euler(rotZ);
     }
 
+    void RollerAnimationCheck()
+    {
+        roller.AddRotZ(-rb.velocity.y * 3);
+        roller.SetScale((-transform.position.y + 10f) / 16);
+    }
+
+
+
+    public void GameOver()
+    {
+        CanMove = false;
+
+        animator.enabled = false;
+
+        renderer.sprite = DamagedSprite;
+
+        rb.velocity = Vector2.down;
+
+    }
+
+
+
+
+
+
+
+
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!CanMove) return;
@@ -189,21 +240,21 @@ public class KiteController : AFlyObject
 
         switch (obj.Status.ObjType)
         {
-            case ObjType.Kite:
-
+            case ObjType.Goal:
+                GameManager.Instance.GameClear();
                 break;
             case ObjType.Bird:
                 CanMove = false;
                 bounds.yD = -12;
                 rb.velocity = new Vector2(0, -3);
                 GameManager.Instance.GameOver();
-                Debug.Log("鳥！");
+                //Debug.Log("鳥！");
                 break;
             case ObjType.Ring:
-                Debug.Log(obj.Status.Point + "Point!");
+                //Debug.Log(obj.Status.Point + "Point!");
                 ScoreController.Instance.AddScore(obj.Status.Point);
-                Destroy(obj.gameObject,0.15f);
-                //obj.GetComponent<Animator>().enabled = true;
+                //Destroy(obj.gameObject,0.15f);
+                obj.GetComponent<RingController>().PlayAnim();
                 break;
             default:
                 break;

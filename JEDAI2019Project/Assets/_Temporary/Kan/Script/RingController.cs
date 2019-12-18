@@ -9,9 +9,13 @@ public class RingController : AFlyObject
     [SerializeField]
     Vector2 MoveDirection = Vector2.left;
     // Start is called before the first frame update
+
+    Animator animator;
+    ParticleSystem particle;
     void Start()
     {
-        
+        animator = GetComponentInChildren<Animator>();
+        particle = GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -21,11 +25,18 @@ public class RingController : AFlyObject
     }
 
     /// <summary>
-    /// AnimationEvent用
+    /// 
     /// </summary>
     public void DestroySelf()
     {
-        Destroy(this.gameObject);
+        Destroy(this.gameObject,0.4f);
+    }
+
+    public void PlayAnim()
+    {
+        animator.enabled = true;
+        particle.Play();
+        DestroySelf();
     }
 
 }
