@@ -27,6 +27,9 @@ public class KiteController : AFlyObject
 
     [SerializeField]
     Text text;
+    
+    [SerializeField]
+    Vector3 pointOffset;
 
     public Bounds Bounds { get => bounds; private set => bounds = value; }
     public float Acceleration { get => acceleration; set => acceleration = value; }
@@ -212,10 +215,11 @@ public class KiteController : AFlyObject
     {
         //roller.AddRotZ(-rb.velocity.y * 3);
 
-        roller.SetRotZ(controller.RollValue);
-        //roller.SetScale((-transform.position.y + 10f) / 16);
+        //roller.SetRotZ(-controller.RollValue);
+        roller.SetRotZ((-transform.position.y + 10f) * 360);
+        roller.SetScale((-transform.position.y + 10f) / 16);
 
-        roller.SetScale(controller.RollValue / 3600f);
+        //roller.SetScale(Mathf.Clamp(3600f / controller.RollValue ,0.1f,1.0f));
     }
 
 
@@ -264,7 +268,7 @@ public class KiteController : AFlyObject
                 break;
             case ObjType.Ring:
                 //Debug.Log(obj.Status.Point + "Point!");
-                ScoreController.Instance.AddScore(obj.Status.Point);
+                ScoreController.Instance.AddScore(obj.Status.Point,transform.position + pointOffset);
                 //Destroy(obj.gameObject,0.15f);
                 obj.GetComponent<RingController>().PlayAnim();
                 break;
