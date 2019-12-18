@@ -17,22 +17,19 @@ public static class AudioController
     public static void PlaySnd(string name, Vector3 position, float volume)
 
     {
-
-
-
         AudioClip clip = LoadClip(name);
 
         if (clip != null)
-
-
-
+        {
             AudioSource.PlayClipAtPoint(clip, position, volume);
+        }
+           
 
         else
-
-
-
-            Debug.LogError("Clip is Missing" + name);
+        { 
+            Debug.LogError("Clip is Missing" + name); 
+        }
+            
 
     }
 
@@ -42,7 +39,6 @@ public static class AudioController
     {
 
         if (!audioDic.ContainsKey(name))
-
         {
 
             string dirSound = "Sounds/" + name;

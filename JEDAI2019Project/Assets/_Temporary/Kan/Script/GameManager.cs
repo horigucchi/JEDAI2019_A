@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void GameOver()
     {
+
         //リトライボタンを表示させる
         RetryButton.SetActive(true);
         //一時停止ボタンを隠させる
@@ -93,6 +94,8 @@ public class GameManager : MonoBehaviour
         Horiguchi.YarnController.Instance.gameObject.SetActive(false);
         //ステージクリアFlagをTrueにする
         stage.StageClear = true;
+
+        player.GameOver();
 
     } 
 

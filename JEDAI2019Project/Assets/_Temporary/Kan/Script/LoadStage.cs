@@ -33,16 +33,20 @@ public static class LoadStage
             for (int j = 0; j < row.Length; j++)
             {
                 //Debug.Log(j + "  " + row[j]);
-                int f;
-                int.TryParse(row[j], out f);
+                int flyObjType;
+                int.TryParse(row[j], out flyObjType);
 
-                if (f == 1)
+                if (flyObjType == 1)
                 {
                     waves[j].flyObjects[i] = Resources.Load<FlyObjectData>(flyObjectDataFolder + "Bird");
                 }
-                else if(f == 2)
+                else if(flyObjType == 2)
                 {
                     waves[j].flyObjects[i] = Resources.Load<FlyObjectData>(flyObjectDataFolder + "Ring");
+                }
+                else if(flyObjType == 3)
+                {
+                    waves[j].flyObjects[i] = Resources.Load<FlyObjectData>(flyObjectDataFolder + "RingEX");
                 }
                 
             }

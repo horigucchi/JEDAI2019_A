@@ -104,7 +104,7 @@ public class StageController : MonoBehaviour
             if (waveNumber > waveCount - 1)
             {
                 Debug.Log("WaveEnd");
-                StartCoroutine(SpawnGoalLine(6f));
+                StartCoroutine(SpawnGoalLine(4f));
                 //waveNumber = 0;
                 StageClear = true;
                 
@@ -117,7 +117,7 @@ public class StageController : MonoBehaviour
     IEnumerator SpawnGoalLine(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        CreateFlyObj(GoalLine, 2);
+        CreateFlyObj(GoalLine, 3);
     }
 
     private void SpawnGoalLine()
@@ -143,7 +143,7 @@ public class StageController : MonoBehaviour
         
         obj.GetComponent<AFlyObject>().Status = flyObject;
 
-        obj.transform.position = new Vector2(12, startPositionY);
+        obj.transform.position = new Vector2(11, startPositionY);
 
 
        
@@ -161,9 +161,9 @@ public class StageController : MonoBehaviour
         obj.GetComponent<AFlyObject>().Status = flyObject;
 
 
-        int positionY = -gridNumber * 2 + 4;
+        float positionY = -gridNumber * 2 + 5.5f;
 
-        obj.transform.position = new Vector2(12, positionY);
+        obj.transform.position = new Vector2(11, positionY);
 
 
     }

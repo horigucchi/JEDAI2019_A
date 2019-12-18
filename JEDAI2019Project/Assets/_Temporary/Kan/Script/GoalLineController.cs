@@ -8,6 +8,7 @@ public class GoalLineController : AFlyObject
     [SerializeField]
     Vector2 MoveDirection = Vector2.left;
 
+    
     // Start is called before the first frame update
     void Start()
     {

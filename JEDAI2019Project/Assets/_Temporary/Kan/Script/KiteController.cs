@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Bounds
@@ -24,6 +25,9 @@ public class KiteController : AFlyObject
     [SerializeField]
     RollerSprite roller;
 
+    [SerializeField]
+    Text text;
+
     public Bounds Bounds { get => bounds; private set => bounds = value; }
     public float Acceleration { get => acceleration; set => acceleration = value; }
 
@@ -35,7 +39,7 @@ public class KiteController : AFlyObject
     [SerializeField]
     Sprite DamagedSprite;
 
-    SpriteRenderer renderer;
+    SpriteRenderer rd;
 
 
 
@@ -54,7 +58,7 @@ public class KiteController : AFlyObject
         }
 
         animator = GetComponentInChildren<Animator>();
-        renderer = GetComponentInChildren<SpriteRenderer>();
+        rd = GetComponentInChildren<SpriteRenderer>();
 
         CanMove = true;
     }
@@ -101,7 +105,8 @@ public class KiteController : AFlyObject
             default:
                 break;
         }
-           
+        
+        
     }
 
 
@@ -110,7 +115,7 @@ public class KiteController : AFlyObject
         
         Vector2 velocity = rb.velocity;
 
-        if(velocity.y<0 && force.y > 0)
+        if (velocity.y < 0 && force.y > 0)
         {
             velocity.y = 0;
 
@@ -119,6 +124,10 @@ public class KiteController : AFlyObject
         {
             velocity.y = 0;
         }
+
+        //Acceleration = force.y;
+
+        //velocity.y += Acceleration * Time.deltaTime;
 
         velocity += force * Acceleration * Time.deltaTime;
 
@@ -134,6 +143,8 @@ public class KiteController : AFlyObject
         velocity.y = Mathf.Clamp(velocity.y, -30f, 30f);
 
         rb.velocity = velocity;
+        text.text = "Speed:" + (int)velocity.y + " " + /*"加速度:" + acceleration*/ (-(int)controller.RollValue / 360f) + "回転"; 
+
     }
 
 
@@ -199,8 +210,12 @@ public class KiteController : AFlyObject
 
     void RollerAnimationCheck()
     {
-        roller.AddRotZ(-rb.velocity.y * 3);
-        roller.SetScale((-transform.position.y + 10f) / 16);
+        //roller.AddRotZ(-rb.velocity.y * 3);
+
+        roller.SetRotZ(controller.RollValue);
+        //roller.SetScale((-transform.position.y + 10f) / 16);
+
+        roller.SetScale(controller.RollValue / 3600f);
     }
 
 
@@ -209,20 +224,13 @@ public class KiteController : AFlyObject
     {
         CanMove = false;
 
-        animator.enabled = false;
+        animator.SetTrigger("Dead");
 
-        renderer.sprite = DamagedSprite;
+        rd.sprite = DamagedSprite;
 
         rb.velocity = Vector2.down;
 
     }
-
-
-
-
-
-
-
 
 
 
@@ -246,7 +254,11 @@ public class KiteController : AFlyObject
             case ObjType.Bird:
                 CanMove = false;
                 bounds.yD = -12;
+
+                //下に落ちる
                 rb.velocity = new Vector2(0, -3);
+
+                //
                 GameManager.Instance.GameOver();
                 //Debug.Log("鳥！");
                 break;
@@ -255,6 +267,9 @@ public class KiteController : AFlyObject
                 ScoreController.Instance.AddScore(obj.Status.Point);
                 //Destroy(obj.gameObject,0.15f);
                 obj.GetComponent<RingController>().PlayAnim();
+                break;
+            case ObjType.RingEX:
+                obj.GetComponent<RingExController>().HitCheck(transform);
                 break;
             default:
                 break;

@@ -7,11 +7,12 @@ using UnityEngine;
 public class RingController : AFlyObject
 {
     [SerializeField]
-    Vector2 MoveDirection = Vector2.left;
+    protected Vector2 MoveDirection = Vector2.left;
     // Start is called before the first frame update
-
-    Animator animator;
-    ParticleSystem particle;
+    [HideInInspector]
+    public Animator animator;
+    [HideInInspector]
+    public ParticleSystem particle;
     void Start()
     {
         animator = GetComponentInChildren<Animator>();

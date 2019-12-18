@@ -5,7 +5,7 @@ using UnityEditor;
 
 public enum ObjType
 {
-    Kite, Bird, Ring, Drone, Goal,
+    Kite, Bird, Ring, Drone, Goal,RingEX,
 }
 
 [CreateAssetMenu(fileName = "FlyObjectStatus.asset", menuName = "FlyObject/FlyObjectAsset", order = 30)]
