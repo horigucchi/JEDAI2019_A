@@ -16,7 +16,7 @@ public class RingExController : RingController
     {
         speed = Status.Speed;
         animator = GetComponentInChildren<Animator>();
-        particle = GetComponentInChildren<ParticleSystem>();
+        childparticle = GetComponentInChildren<ParticleSystem>();
     }
 
 
@@ -25,7 +25,10 @@ public class RingExController : RingController
         rb.velocity = MoveDirection.normalized * speed;
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public float GetPositionY()
     {
         return transform.position.y;
@@ -52,7 +55,7 @@ public class RingExController : RingController
         animator.SetTrigger("ExHit");
         AudioController.PlaySnd("one23", Camera.main.transform.position, 0.5f);
         speed *= 0.5f;
-        particle.Play();
+        childparticle.Play();
         Destroy(this.gameObject, 1f);
     }
 

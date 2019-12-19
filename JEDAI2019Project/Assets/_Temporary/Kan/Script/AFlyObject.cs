@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
+/// <summary>
+/// ゲーム画面
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class AFlyObject : MonoBehaviour
 {
@@ -19,12 +21,6 @@ public class AFlyObject : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
 }

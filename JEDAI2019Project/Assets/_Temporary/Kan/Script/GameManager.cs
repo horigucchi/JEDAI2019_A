@@ -11,7 +11,9 @@ public enum GameState
     StartMenu, InStage, StageClear, GameOver, Pause
 }
 
-
+/// <summary>
+/// ゲーム遷移クラス
+/// </summary>
 public class GameManager : Singleton<GameManager>
 {
     //public static GameManager Instance;
@@ -29,7 +31,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     float ResultDelay;
 
-    float levelTime;
+    
 
     GameState gameState;
 
@@ -46,7 +48,6 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
-        levelTime = 0;
         clear.enabled = false;
         RetryButton.SetActive(false);
         StartStage();
@@ -64,20 +65,6 @@ public class GameManager : Singleton<GameManager>
             RestartStage();
         }
 
-
-        levelTime = Time.timeSinceLevelLoad;
-
-        if (levelTime >= 14.0f)
-        {
-            //stage.StageClear = true;
-        }
-
-        if (levelTime>= 20.0f)
-        {
-            //GameClear();
-        }
-
-        
     }
 
 
@@ -101,19 +88,17 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// プレイヤーが死ぬ時の処理
+    /// ゲームオーバー処理
     /// </summary>
     public void GameOver()
     {
         gameState = GameState.GameOver;
 
-       
-        //
         stage.SpawnFlag = false;
 
         player.GameOver();
 
-        StartCoroutine(ShowResultDelay(ResultDelay, gameState));
+        StartCoroutine(ShowResultDelay(ResultDelay));
 
     } 
 
@@ -178,10 +163,15 @@ public class GameManager : Singleton<GameManager>
         BGM.Play("Front");
     }
 
-    IEnumerator ShowResultDelay(float delaySec,GameState state)
+
+    /// <summary>
+    /// リザルト画面を遅延表示させる
+    /// </summary>
+    /// <param name="delaySec">遅延秒数</param>
+    IEnumerator ShowResultDelay(float delaySec)
     {
         yield return new WaitForSeconds(delaySec);
-        switch (state)
+        switch (gameState)
         {
            
             case GameState.StageClear:
@@ -207,4 +197,9 @@ public class GameManager : Singleton<GameManager>
         
     }
 
+
+    public float GetStageLeftTime()
+    {
+        return stage.GetStageLeftTime();
+    }
 }

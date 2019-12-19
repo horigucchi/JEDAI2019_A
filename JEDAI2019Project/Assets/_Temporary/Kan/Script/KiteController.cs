@@ -36,6 +36,8 @@ public class KiteController : AFlyObject
 
     public bool CanMove { get; set; }
 
+    [SerializeField]
+    bool Immune;
 
     Animator animator;
 
@@ -44,6 +46,7 @@ public class KiteController : AFlyObject
 
     SpriteRenderer rd;
 
+    
 
 
     void Start()
@@ -64,6 +67,7 @@ public class KiteController : AFlyObject
         rd = GetComponentInChildren<SpriteRenderer>();
 
         CanMove = true;
+        Immune = false;
     }
 
 
@@ -79,13 +83,15 @@ public class KiteController : AFlyObject
             RollCheck();
 #if UNITY_EDITOR
 
-            MoveCheck();
+            KeyBoardCheck();
 #endif
         }
 
+        ///ずっと下にいるとゲームオーバーになる
         if (rb.velocity.y < -15f)
         {
-            GameManager.Instance.GameOver();        }
+            GameManager.Instance.GameOver();        
+        }
 
     }
 
@@ -93,6 +99,8 @@ public class KiteController : AFlyObject
     {
        
     }
+
+
 
     public void RollCheck()
     {
@@ -119,7 +127,19 @@ public class KiteController : AFlyObject
         
     }
 
+    /// <summary>
+    /// 風方向に加速させる
+    /// </summary>
+    /// <param name="windDir">風の方向</param>
+    void WindCheck(Vector2 windDir)
+    {
+        AddVelocity(windDir);
+    }
 
+    /// <summary>
+    /// 方向による加速させる
+    /// </summary>
+    /// <param name="direction"></param>
     public void AddVelocity(Vector2 direction)
     {
         
@@ -141,24 +161,26 @@ public class KiteController : AFlyObject
 
         velocity += direction * Acceleration * Time.deltaTime;
 
-        if (direction.x == 0)
-        {
-            velocity.x *= 0.98f;
-        }
-        if (direction.y == 0)
-        {
-            velocity.y *= 0.98f;
-        }
+        //if (direction.x == 0)
+        //{
+        //    velocity.x *= 0.98f;
+        //}
+        //if (direction.y == 0)
+        //{
+        //    velocity.y *= 0.98f;
+        //}
 
         velocity.y = Mathf.Clamp(velocity.y, -30f, 30f);
 
         rb.velocity = velocity;
-        text.text = "Speed:" + (int)velocity.y + " " + /*"加速度:" + acceleration*/ ((int)controller.RollValue / 360f) + "巻く"; 
+        text.text = 　"ゴールまで" + GameManager.Instance.GetStageLeftTime() + "秒" /*"Speed:" + (int)velocity.y*/ + " " + /*"加速度:" + acceleration*/ ((int)controller.RollValue / 360f) + "巻く"; 
 
     }
 
-
-    void MoveCheck()
+    /// <summary>
+    /// [Debug]キーボード処理
+    /// </summary>
+    void KeyBoardCheck()
     {
         float h, v;
         h = Input.GetAxisRaw("Horizontal");
@@ -244,6 +266,8 @@ public class KiteController : AFlyObject
     }
 
 
+    
+
 
     public void GameOver()
     {
@@ -283,6 +307,7 @@ public class KiteController : AFlyObject
                 break;
             case ObjType.Bird:
 
+                if (Immune) return;
 
                 CanMove = false;
                 bounds.yD = -12;

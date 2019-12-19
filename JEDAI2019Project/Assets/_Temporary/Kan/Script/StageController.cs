@@ -18,18 +18,11 @@ public class StageController : MonoBehaviour
 
 
     public FlyObjectData GoalLine;
+    public float goalLineSpawnDelay;
+
 
     public string StageDataName;
 
-
-    //[SerializeField]
-    //List<FlyObjectData> BirdLevels = new List<FlyObjectData>();
-
-    //[SerializeField]
-    //List<FlyObjectData> RingLevels = new List<FlyObjectData>();
-
-    //[SerializeField]
-    //List<WaveData> waves = new List<WaveData>();
 
     LevelData level;
 
@@ -37,6 +30,10 @@ public class StageController : MonoBehaviour
     int waveCount;
     float spawnrate = .5f;
     float spawntime;
+
+    float totalLevelTime;
+    float leftLevelTime;
+    float levelTime;
 
     private void Awake()
     {
@@ -59,14 +56,17 @@ public class StageController : MonoBehaviour
         {
             LoadStage.LoadStageCSV(StageDataName, level.Waves, 5);
         }
-
-
+        
+        
     }
     void Start()
     {
         Background.scrollSpeed = scrollSpeed;
         waveNumber = 0;
         waveCount = level.Waves.Count;
+        totalLevelTime = spawnrate * waveCount + goalLineSpawnDelay;
+        leftLevelTime = totalLevelTime;
+        levelTime = 0f;
         spawntime = 0f;
         SpawnFlag = false;
         //SpawnGoalLine();
@@ -91,11 +91,19 @@ public class StageController : MonoBehaviour
 
         if (SpawnFlag == false)
         {
+            if(waveNumber > waveCount - 1)
+            {
+                levelTime += Time.deltaTime;
+                leftLevelTime -= Time.deltaTime;
+            }
             return;
         }
 
         spawntime += Time.deltaTime;
-        if (spawntime>spawnrate)
+        levelTime += Time.deltaTime;
+        leftLevelTime -= Time.deltaTime;
+
+        if (spawntime>=spawnrate)
         {
             //CreateFlyObj(BirdLevels[0],0);
             //SpawnWave(waves[waveNumber]);
@@ -104,34 +112,44 @@ public class StageController : MonoBehaviour
             spawntime = 0f;
             if (waveNumber > waveCount - 1)
             {
-                Debug.Log("WaveEnd");
-                StartCoroutine(SpawnGoalLine(4f));
+                //Debug.Log("StageEnd");
+                StartCoroutine(SpawnGoalLine(goalLineSpawnDelay));
                 //waveNumber = 0;
                 SpawnFlag = false;
-                
-
             }
         }
 
+       
+
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="waitTime"></param>
     IEnumerator SpawnGoalLine(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        CreateFlyObj(GoalLine, 3);
+        //三番目の列を中心にして生成する
+        int goalLinePositionY = 3;
+        CreateFlyObj(GoalLine, goalLinePositionY);
     }
 
-    private void SpawnGoalLine()
-    {
-        CreateFlyObj(GoalLine,2);
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="speed"></param>
     public void SetScrollSpeed(float speed)
     {
         ScrollSpeed = speed;
         Background.scrollSpeed = scrollSpeed;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="flyObject"></param>
+    /// <param name="startPositionY"></param>
     public void CreateFlyObj(FlyObjectData flyObject,float startPositionY)
     {
         if (flyObject.FlyObjPrefab == null)
@@ -148,6 +166,11 @@ public class StageController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="flyObject"></param>
+    /// <param name="gridNumber">上からの列番</param>
     public void CreateFlyObj(FlyObjectData flyObject, int gridNumber)
     {
         if (flyObject.FlyObjPrefab == null)
@@ -167,7 +190,10 @@ public class StageController : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="wave"></param>
     void SpawnWave(WaveData wave)
     {
         for (int i = 0; i < wave.flyObjects.Count; i++)
@@ -179,9 +205,17 @@ public class StageController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void ResetStage()
     {
         waveNumber = 0;
     }
 
+
+    public float GetStageLeftTime()
+    {
+        return Mathf.Clamp(leftLevelTime,0,totalLevelTime);
+    }
 }
