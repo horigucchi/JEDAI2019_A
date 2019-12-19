@@ -211,6 +211,11 @@ public class StageController : MonoBehaviour
     public void ResetStage()
     {
         waveNumber = 0;
+        waveCount = level.Waves.Count;
+        totalLevelTime = spawnrate * waveCount + goalLineSpawnDelay;
+        leftLevelTime = totalLevelTime;
+        levelTime = 0f;
+        spawntime = 0f;
     }
 
 

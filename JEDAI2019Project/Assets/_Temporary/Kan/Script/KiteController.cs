@@ -29,7 +29,7 @@ public class KiteController : AFlyObject
     Text text;
     
     [SerializeField]
-    Vector3 pointOffset;
+    Vector3 pointUIOffset;
 
     public Bounds Bounds { get => bounds; private set => bounds = value; }
     public float Acceleration { get => acceleration; set => acceleration = value; }
@@ -44,10 +44,13 @@ public class KiteController : AFlyObject
     [SerializeField]
     Sprite DamagedSprite;
 
+    [SerializeField]
+    Sprite StartSprite;
+
     SpriteRenderer rd;
 
-    
-
+    Vector3 startPosition;
+    float startYD;
 
     void Start()
     {
@@ -65,9 +68,11 @@ public class KiteController : AFlyObject
 
         animator = GetComponentInChildren<Animator>();
         rd = GetComponentInChildren<SpriteRenderer>();
-
+        startPosition = transform.position;
+        startYD = bounds.yD;
         CanMove = true;
         Immune = false;
+
     }
 
 
@@ -101,7 +106,17 @@ public class KiteController : AFlyObject
     }
 
 
+    public void Reset()
+    {
+        transform.position = startPosition;
+        CanMove = true;
+        Immune = false;
+        rb.velocity = Vector2.zero;
+        bounds.yD = startYD;
+        animator.SetTrigger("Reset");
+        rd.sprite = StartSprite;
 
+    }
     public void RollCheck()
     {
 
@@ -302,7 +317,7 @@ public class KiteController : AFlyObject
         {
             case ObjType.Goal:
 
-
+                obj.GetComponent<GoalLineController>().HitCheck(transform, pointUIOffset);
                 GameManager.Instance.GameClear();
                 break;
             case ObjType.Bird:
@@ -322,11 +337,11 @@ public class KiteController : AFlyObject
                 break;
             case ObjType.Ring:
 
-                obj.GetComponent<RingController>().HitCheck(pointOffset);
+                obj.GetComponent<RingController>().HitCheck(pointUIOffset);
                 break;
             case ObjType.RingEX:
 
-                obj.GetComponent<RingExController>().HitCheck(transform,pointOffset);
+                obj.GetComponent<RingExController>().HitCheck(transform,pointUIOffset);
                 break;
             default:
                 break;

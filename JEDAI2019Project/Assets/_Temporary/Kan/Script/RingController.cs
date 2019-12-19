@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class RingController : AFlyObject
 {
-    [SerializeField]
-    protected Vector2 MoveDirection = Vector2.left;
+    public Vector2 MoveDirection = Vector2.left;
     
     [HideInInspector]
     public Animator animator;
@@ -33,22 +32,31 @@ public class RingController : AFlyObject
         Destroy(this.gameObject,0.4f);
     }
 
-    void PlayAnim()
+    public void PlayParticle()
     {
         animator.enabled = true;
-        childparticle.Play();
-        DestroySelf();
     }
 
-    public void HitCheck(Vector3 pointOffset)
+    public void PlayAnim()
+    {
+        animator.enabled = true;
+    }
+
+    public virtual void HitCheck(Vector3 pointOffset)
     {
         //Debug.Log(obj.Status.Point + "Point!");
         ScoreController.Instance.AddScore(Status.Point, transform.position + pointOffset);
         //Destroy(obj.gameObject,0.15f);
 
         PlayAnim();
+        PlayParticle();
+        DestroySelf();
         AudioController.PlaySnd("button04", Camera.main.transform.position, 0.5f);
     }
 
+    public virtual void HitCheck(Transform kitetransform, Vector3 pointOffset)
+    {
+        //HitEffect
+    }
 
 }

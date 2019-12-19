@@ -366,7 +366,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 11
-  m_Sprite: {fileID: 21300010, guid: bbf73eefca94d2a40baa5f3d78065186, type: 3}
+  m_Sprite: {fileID: 21300010, guid: e94ac0bd66dec814ab2bd5bc424ff03e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -465,7 +465,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 7
-  m_Sprite: {fileID: 21300008, guid: bbf73eefca94d2a40baa5f3d78065186, type: 3}
+  m_Sprite: {fileID: 21300008, guid: e94ac0bd66dec814ab2bd5bc424ff03e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5432,7 +5432,7 @@ MonoBehaviour:
   status: {fileID: 11400000, guid: 64740b0d17aa7374eae07a4c86ae3010, type: 2}
   MoveDirection: {x: -1, y: 0}
   animator: {fileID: 0}
-  particle: {fileID: 0}
+  childparticle: {fileID: 0}
   distance: 0.5
   BonusPoint: 500
 --- !u!50 &1567035351009802401

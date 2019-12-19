@@ -31,12 +31,13 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     float ResultDelay;
 
-    
+    [SerializeField]
+    private Slider slider = null;
 
     GameState gameState;
 
 
-    public Text clear;
+    public GameObject clear;
     public GameObject RetryButton;
     public GameObject PauseButton;
 
@@ -48,7 +49,7 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
-        clear.enabled = false;
+        clear.SetActive(false);
         RetryButton.SetActive(false);
         StartStage();
     }
@@ -76,7 +77,7 @@ public class GameManager : Singleton<GameManager>
         gameState = GameState.StageClear;
 
         //クリア文字を表示させる
-        clear.enabled = true;
+        clear.SetActive(true);
 
         //プレイヤーの移動操作をやめさせて
         player.CanMove = false;
@@ -111,6 +112,8 @@ public class GameManager : Singleton<GameManager>
         gameState = GameState.InStage;
         SetSpawnState(true);
         StartCoroutine(PlayFrontBGM(BGMDelay));
+        slider.maxValue = GetStageLeftTime();
+        slider.value = 0;
     }
     /// <summary>
     /// ステージを一時停止させる
@@ -137,6 +140,12 @@ public class GameManager : Singleton<GameManager>
     {
         gameState = GameState.InStage;
         stage.ResetStage();
+        slider.maxValue = GetStageLeftTime();
+        slider.value = 0;
+        RetryButton.SetActive(false);
+        Horiguchi.YarnController.Instance.gameObject.SetActive(true);
+        player.Reset();
+        PauseButton.SetActive(true);
     }
 
     /// <summary>
@@ -177,7 +186,7 @@ public class GameManager : Singleton<GameManager>
             case GameState.StageClear:
                 //TODO:
                 //Show Result
-
+                GameClear();
                 break;
             case GameState.GameOver:
                 //リトライボタンを表示させる
