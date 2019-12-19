@@ -100,8 +100,15 @@ namespace Horiguchi
             set(yarn.position);
         }
 
+        private void clearCircle()
+        {
+            rangeSprite.gameObject.SetActive(false);
+            tapSprite.gameObject.SetActive(false);
+        }
         private void set(Vector3 point)
         {
+            rangeSprite.gameObject.SetActive(true);
+            tapSprite.gameObject.SetActive(true);
             const float dev = 1f / (2 * 2);
             maxRadius = (circle.localScale.x + circle.localScale.y) * dev;
             minRadius = (coreSprite.localScale.x + coreSprite.localScale.y) * dev;
@@ -221,6 +228,7 @@ namespace Horiguchi
             // 画面座標からゲーム座標を取ってくる
             tapPos = getTapWorldPoint();
             if (Input.GetMouseButtonDown(0)) set(tapPos);
+            if (Input.GetMouseButtonUp(0)) clearCircle();
             if (Input.GetMouseButton(0))
             {
                 // 巻く原点からの位置
