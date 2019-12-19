@@ -9,10 +9,12 @@ public class RingExController : RingController
 
     //Hit Bonus Score
     public int BonusPoint;
-    
+
+    float speed;
 
     void Start()
     {
+        speed = Status.Speed;
         animator = GetComponentInChildren<Animator>();
         particle = GetComponentInChildren<ParticleSystem>();
     }
@@ -20,7 +22,7 @@ public class RingExController : RingController
 
     void Update()
     {
-        rb.velocity = MoveDirection.normalized * Status.Speed;
+        rb.velocity = MoveDirection.normalized * speed;
     }
 
 
@@ -32,7 +34,7 @@ public class RingExController : RingController
     public void HitCheck(Transform kitetransform,Vector3 pointOffset)
     {
         float hitdistance = Mathf.Abs(transform.position.y - kitetransform.position.y);
-
+        Debug.Log(hitdistance);
         if (hitdistance > distance)
         {
             MissHit();
@@ -47,13 +49,18 @@ public class RingExController : RingController
 
     private void Hit()
     {
+        animator.SetTrigger("ExHit");
         AudioController.PlaySnd("one23", Camera.main.transform.position, 0.5f);
+        speed *= 0.5f;
         particle.Play();
+        Destroy(this.gameObject, 1f);
     }
 
     private void MissHit()
     {
-        animator.enabled = true;
+        animator.SetTrigger("ExMiss");
         AudioController.PlaySnd("button04", Camera.main.transform.position, 0.5f);
+        MoveDirection = Vector2.zero;
+        Destroy(this.gameObject, 1f);
     }
 }

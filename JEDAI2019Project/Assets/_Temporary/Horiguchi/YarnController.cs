@@ -232,7 +232,7 @@ namespace Horiguchi
                     var radAngle = Mathf.Atan2(rangePos.y, rangePos.x) + pi2;
                     radAngle %= pi2;
                     var degAngle = radAngle * Mathf.Rad2Deg;
-                    Debug.Log(degAngle);
+                    //Debug.Log(degAngle);
                     //bool a = (oldAngle < 360 && 360 < degAngle) || (degAngle < 360 && 360 < oldAngle);
                     //if (a)
                     if (abs(oldAngle - degAngle) > 330)

@@ -49,7 +49,7 @@ public class GameManager : Singleton<GameManager>
         levelTime = 0;
         clear.enabled = false;
         RetryButton.SetActive(false);
-        
+        StartStage();
     }
 
     
@@ -197,7 +197,8 @@ public class GameManager : Singleton<GameManager>
                 //Rollerを隠させる
                 Horiguchi.YarnController.Instance.gameObject.SetActive(false);
 
-                AudioController.PlaySnd("crow1", Camera.main.transform.position, 0.5f);
+                //AudioController.PlaySnd("crow1", Camera.main.transform.position, 0.5f);
+                AudioController.PlaySnd("gameover2", Camera.main.transform.position, 0.5f);
                 break;
             default:
                 break;
