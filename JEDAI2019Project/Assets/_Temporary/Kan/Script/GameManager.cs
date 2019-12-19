@@ -55,6 +55,14 @@ public class GameManager : Singleton<GameManager>
     
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            PauseStage();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            RestartStage();
+        }
 
 
         levelTime = Time.timeSinceLevelLoad;
@@ -128,6 +136,18 @@ public class GameManager : Singleton<GameManager>
         SetSpawnState(false);
     }
 
+    /// <summary>
+    /// 一時停止を解除させる
+    /// </summary>
+    public void ResumeStage()
+    {
+        gameState = GameState.InStage;
+        SetSpawnState(true);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void RestartStage()
     {
         gameState = GameState.InStage;
@@ -135,10 +155,10 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// ステージ生成状態を直接設定
+    /// ステージ生成状態を設定する
     /// </summary>
     /// <param name="ifSpawn">true:障害物を生成させる　false:生成を停止させる</param>
-    public void SetSpawnState(bool ifSpawn)
+    void SetSpawnState(bool ifSpawn)
     {
         stage.SpawnFlag = ifSpawn;
     }
