@@ -14,6 +14,6 @@ public class ResultButton : MonoBehaviour
     {
         // ステージ開始の処理
         GameManager.Instance.RestartStage();
-
+        //SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
     }
 }

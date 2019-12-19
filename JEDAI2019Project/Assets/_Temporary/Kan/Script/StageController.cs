@@ -21,10 +21,14 @@ public class StageController : MonoBehaviour
     public float goalLineSpawnDelay;
 
 
-    public string StageDataName;
+    public string Stage1DataName;
+    public string Stage2DataName;
 
 
-    LevelData level;
+    LevelData level1;
+    LevelData level2;
+
+    LevelData[] Levels = new LevelData[2];
 
     int waveNumber;
     int waveCount;
@@ -34,6 +38,9 @@ public class StageController : MonoBehaviour
     float totalLevelTime;
     float leftLevelTime;
     float levelTime;
+
+    Dictionary<int, LevelData> stagenumbers = new Dictionary<int, LevelData>();
+    public int CurrentStage { get; set; }
 
     private void Awake()
     {
@@ -49,37 +56,56 @@ public class StageController : MonoBehaviour
             }
         }
 
-        level = ScriptableObject.CreateInstance<LevelData>();
+
+        level1 = ScriptableObject.CreateInstance<LevelData>();
+        //level2 = ScriptableObject.CreateInstance<LevelData>();
 
 
-        if (level != null)
-        {
-            LoadStage.LoadStageCSV(StageDataName, level.Waves, 5);
-        }
+        
+        LoadStage.LoadStageCSV(Stage1DataName, level1.Waves, 5);
+        //stagenumbers.Add(1, level1);
+        
+        //LoadStage.LoadStageCSV(Stage2DataName, level2.Waves, 5);
+        //stagenumbers.Add(2, level2);
         
         
+        //Levels[0] = ScriptableObject.CreateInstance<LevelData>();
+        //Levels[1] = ScriptableObject.CreateInstance<LevelData>();
+
+
+        
+        //LoadStage.LoadStageCSV(Stage1DataName, Levels[0].Waves, 5);
+        //stagenumbers.Add(1, level1);
+
+        //LoadStage.LoadStageCSV(Stage2DataName, Levels[0].Waves, 5);
+        //stagenumbers.Add(2, level2);
+
+
+
     }
     void Start()
     {
         Background.scrollSpeed = scrollSpeed;
         waveNumber = 0;
-        waveCount = level.Waves.Count;
+        waveCount = level1.Waves.Count;
         totalLevelTime = spawnrate * waveCount + goalLineSpawnDelay;
         leftLevelTime = totalLevelTime;
         levelTime = 0f;
         spawntime = 0f;
         SpawnFlag = false;
         //SpawnGoalLine();
+        CurrentStage = 1;
     }
 
     
+
     void Update()
     {
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //CreateFlyObj(BirdLevels[0],0);
-            SpawnWave(level.Waves[waveNumber]);
+            SpawnWave(level1.Waves[waveNumber]);
             waveNumber += 1;
             if (waveNumber > waveCount - 1)
             {
@@ -107,7 +133,9 @@ public class StageController : MonoBehaviour
         {
             //CreateFlyObj(BirdLevels[0],0);
             //SpawnWave(waves[waveNumber]);
-            SpawnWave(level.Waves[waveNumber]);
+            //SpawnWave(stagenumbers[CurrentStage].Waves[waveNumber]);
+            //SpawnWave(Levels[CurrentStage-1].Waves[waveNumber]);
+            SpawnWave(level1.Waves[waveNumber]);
             waveNumber += 1;
             spawntime = 0f;
             if (waveNumber > waveCount - 1)
@@ -211,7 +239,7 @@ public class StageController : MonoBehaviour
     public void ResetStage()
     {
         waveNumber = 0;
-        waveCount = level.Waves.Count;
+        waveCount = level1.Waves.Count;
         totalLevelTime = spawnrate * waveCount + goalLineSpawnDelay;
         leftLevelTime = totalLevelTime;
         levelTime = 0f;

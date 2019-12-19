@@ -40,6 +40,7 @@ public class GameManager : Singleton<GameManager>
     public GameObject clear;
     public GameObject RetryButton;
     public GameObject PauseButton;
+    public GameObject PointUI;
 
     //private void Awake()
     //{
@@ -51,20 +52,20 @@ public class GameManager : Singleton<GameManager>
     {
         clear.SetActive(false);
         RetryButton.SetActive(false);
-        StartStage();
+        //StartStage();
     }
 
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            PauseStage();
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            RestartStage();
-        }
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    PauseStage();
+        //}
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    RestartStage();
+        //}
 
     }
 
@@ -85,7 +86,8 @@ public class GameManager : Singleton<GameManager>
         //凧を画面の右に移動させます
         player.AddVelocity(new Vector2(1, 0));
 
-        
+        PointUI.SetActive(false);
+
     }
 
     /// <summary>
@@ -101,19 +103,25 @@ public class GameManager : Singleton<GameManager>
 
         StartCoroutine(ShowResultDelay(ResultDelay));
 
+        PointUI.SetActive(false);
     } 
 
 
     /// <summary>
     /// ステージをスタートさせる
     /// </summary>
-    public void StartStage()
+    public void StartStage(int stageNumber)
     {
         gameState = GameState.InStage;
-        SetSpawnState(true);
         StartCoroutine(PlayFrontBGM(BGMDelay));
         slider.maxValue = GetStageLeftTime();
         slider.value = 0;
+        stage.CurrentStage = stageNumber;
+        Horiguchi.YarnController.Instance.gameObject.SetActive(true);
+        slider.maxValue = GetStageLeftTime();
+        slider.value = 0;
+        SetSpawnState(true);
+        PointUI.SetActive(true);
     }
     /// <summary>
     /// ステージを一時停止させる
@@ -140,12 +148,15 @@ public class GameManager : Singleton<GameManager>
     {
         gameState = GameState.InStage;
         stage.ResetStage();
+        player.Reset();
+
+        Horiguchi.YarnController.Instance.gameObject.SetActive(true);
         slider.maxValue = GetStageLeftTime();
         slider.value = 0;
         RetryButton.SetActive(false);
-        Horiguchi.YarnController.Instance.gameObject.SetActive(true);
-        player.Reset();
         PauseButton.SetActive(true);
+        SetSpawnState(true);
+        PointUI.SetActive(true);
     }
 
     /// <summary>

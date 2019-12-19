@@ -48,7 +48,7 @@ public class GoalLineController : RingController
     public override void HitCheck(Transform kitetransform, Vector3 pointOffset)
     {
         float hitdistance = Mathf.Abs(transform.position.y - kitetransform.position.y);
-        Debug.Log(hitdistance);
+        //Debug.Log(hitdistance);
         if (hitdistance <= centerDistance)
         {
             Debug.Log("hit!!");
