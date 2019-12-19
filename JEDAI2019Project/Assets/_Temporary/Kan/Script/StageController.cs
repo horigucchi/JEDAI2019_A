@@ -179,4 +179,9 @@ public class StageController : MonoBehaviour
         }
     }
 
+    public void ResetStage()
+    {
+        waveNumber = 0;
+    }
+
 }

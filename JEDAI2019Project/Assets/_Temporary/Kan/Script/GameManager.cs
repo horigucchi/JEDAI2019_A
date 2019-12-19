@@ -49,8 +49,7 @@ public class GameManager : Singleton<GameManager>
         levelTime = 0;
         clear.enabled = false;
         RetryButton.SetActive(false);
-        gameState = GameState.InStage;
-        StartCoroutine(PlayFrontBGM(BGMDelay));
+        
     }
 
     
@@ -111,6 +110,34 @@ public class GameManager : Singleton<GameManager>
     } 
 
 
+    /// <summary>
+    /// ステージをスタートさせる
+    /// </summary>
+    public void StartStage()
+    {
+        gameState = GameState.InStage;
+        SetSpawnState(true);
+        StartCoroutine(PlayFrontBGM(BGMDelay));
+    }
+    /// <summary>
+    /// ステージを一時停止させる
+    /// </summary>
+    public void PauseStage()
+    {
+        gameState = GameState.Pause;
+        SetSpawnState(false);
+    }
+
+    public void RestartStage()
+    {
+        gameState = GameState.InStage;
+        stage.ResetStage();
+    }
+
+    /// <summary>
+    /// ステージ生成状態を直接設定
+    /// </summary>
+    /// <param name="ifSpawn">true:障害物を生成させる　false:生成を停止させる</param>
     public void SetSpawnState(bool ifSpawn)
     {
         stage.SpawnFlag = ifSpawn;
