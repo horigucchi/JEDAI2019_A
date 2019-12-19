@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a0ed1aea90b5a3419ef943dd0b3e158, type: 3}
+  m_Name: Wave4
+  m_EditorClassIdentifier: 
+  WaveNumber: 0
+  SpawnTime: 0
+  flyObjects:
+  - {fileID: 11400000, guid: b64fff66fc07245488f46ad46fb3ab93, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: b64fff66fc07245488f46ad46fb3ab93, type: 2}
+  - {fileID: 11400000, guid: cfa4eb42b5851e64dae0e9100f4586a6, type: 2}
+  - {fileID: 11400000, guid: cfa4eb42b5851e64dae0e9100f4586a6, type: 2}
