@@ -33,11 +33,22 @@ public class RingController : AFlyObject
         Destroy(this.gameObject,0.4f);
     }
 
-    public void PlayAnim()
+    void PlayAnim()
     {
         animator.enabled = true;
         particle.Play();
         DestroySelf();
     }
+
+    public void HitCheck(Vector3 pointOffset)
+    {
+        //Debug.Log(obj.Status.Point + "Point!");
+        ScoreController.Instance.AddScore(Status.Point, transform.position + pointOffset);
+        //Destroy(obj.gameObject,0.15f);
+
+        PlayAnim();
+        AudioController.PlaySnd("button04", Camera.main.transform.position, 0.5f);
+    }
+
 
 }

@@ -82,6 +82,11 @@ public class KiteController : AFlyObject
             MoveCheck();
 #endif
         }
+
+        if (rb.velocity.y < -15f)
+        {
+            GameManager.Instance.GameOver();        }
+
     }
 
     private void FixedUpdate()
@@ -91,19 +96,21 @@ public class KiteController : AFlyObject
 
     public void RollCheck()
     {
+
+
         switch (controller.YarnState)
         {
             case Horiguchi.EYarnState.forwardRolling:
-                AddForce(new Vector2(0, -1));
+                AddVelocity(new Vector2(0, -1));
                 break;
             case Horiguchi.EYarnState.reverseRolling:
-                AddForce(new Vector2(0, 1));
+                AddVelocity(new Vector2(0, 1));
                 break;
             case Horiguchi.EYarnState.hold:
-                AddForce(new Vector2(0, 0));
+                AddVelocity(new Vector2(0, -0.5f));
                 break;
             case Horiguchi.EYarnState.letGo:
-                AddForce(new Vector2(0, -0.5f));
+                AddVelocity(new Vector2(0, -0.5f));
                 break;
             default:
                 break;
@@ -113,17 +120,17 @@ public class KiteController : AFlyObject
     }
 
 
-    public void AddForce(Vector2 force)
+    public void AddVelocity(Vector2 direction)
     {
         
         Vector2 velocity = rb.velocity;
 
-        if (velocity.y < 0 && force.y > 0)
+        if (velocity.y < -5 && direction.y > 0)
         {
             velocity.y = 0;
 
         }
-        if (velocity.y > 0 && force.y < 0)
+        if (velocity.y > 5 && direction.y < 0)
         {
             velocity.y = 0;
         }
@@ -132,13 +139,13 @@ public class KiteController : AFlyObject
 
         //velocity.y += Acceleration * Time.deltaTime;
 
-        velocity += force * Acceleration * Time.deltaTime;
+        velocity += direction * Acceleration * Time.deltaTime;
 
-        if (force.x == 0)
+        if (direction.x == 0)
         {
             velocity.x *= 0.98f;
         }
-        if (force.y == 0)
+        if (direction.y == 0)
         {
             velocity.y *= 0.98f;
         }
@@ -146,7 +153,7 @@ public class KiteController : AFlyObject
         velocity.y = Mathf.Clamp(velocity.y, -30f, 30f);
 
         rb.velocity = velocity;
-        text.text = "Speed:" + (int)velocity.y + " " + /*"加速度:" + acceleration*/ ((int)controller.RollValue / 360f) + "回転"; 
+        text.text = "Speed:" + (int)velocity.y + " " + /*"加速度:" + acceleration*/ ((int)controller.RollValue / 360f) + "巻く"; 
 
     }
 
@@ -215,8 +222,22 @@ public class KiteController : AFlyObject
     {
         //roller.AddRotZ(-rb.velocity.y * 3);
 
+        switch (controller.YarnState)
+        {
+            case Horiguchi.EYarnState.forwardRolling:
+            case Horiguchi.EYarnState.reverseRolling:
+                roller.AddRotZ(-controller.RollingSpeed);
+                break;
+            case Horiguchi.EYarnState.hold:
+            case Horiguchi.EYarnState.letGo:
+                roller.AddRotZ(-rb.velocity.y);
+                break;
+            default:
+                break;
+        }
+
         //roller.SetRotZ(-controller.RollValue);
-        roller.SetRotZ((-transform.position.y + 10f) * 360);
+        //roller.SetRotZ((-transform.position.y + 10f) * 360);
         roller.SetScale((-transform.position.y + 10f) / 16);
 
         //roller.SetScale(Mathf.Clamp(3600f / controller.RollValue ,0.1f,1.0f));
@@ -232,8 +253,11 @@ public class KiteController : AFlyObject
 
         rd.sprite = DamagedSprite;
 
+        bounds.yD = -10f;
+
         rb.velocity = Vector2.down;
 
+        GetComponentInChildren<ParticleSystem>().Play();
     }
 
 
@@ -253,27 +277,31 @@ public class KiteController : AFlyObject
         switch (obj.Status.ObjType)
         {
             case ObjType.Goal:
+
+
                 GameManager.Instance.GameClear();
                 break;
             case ObjType.Bird:
+
+
                 CanMove = false;
                 bounds.yD = -12;
 
                 //下に落ちる
                 rb.velocity = new Vector2(0, -3);
 
+                AudioController.PlaySnd("crowhit1", Camera.main.transform.position, 0.5f);
                 //
                 GameManager.Instance.GameOver();
                 //Debug.Log("鳥！");
                 break;
             case ObjType.Ring:
-                //Debug.Log(obj.Status.Point + "Point!");
-                ScoreController.Instance.AddScore(obj.Status.Point,transform.position + pointOffset);
-                //Destroy(obj.gameObject,0.15f);
-                obj.GetComponent<RingController>().PlayAnim();
+
+                obj.GetComponent<RingController>().HitCheck(pointOffset);
                 break;
             case ObjType.RingEX:
-                obj.GetComponent<RingExController>().HitCheck(transform);
+
+                obj.GetComponent<RingExController>().HitCheck(transform,pointOffset);
                 break;
             default:
                 break;

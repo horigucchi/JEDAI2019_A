@@ -13,7 +13,8 @@ public class StageController : MonoBehaviour
 
     public float ScrollSpeed { get => scrollSpeed; private set => scrollSpeed = value; }
 
-    public bool StageClear { get; set; }
+    public bool SpawnFlag { get; set; }
+
 
 
     public FlyObjectData GoalLine;
@@ -67,7 +68,7 @@ public class StageController : MonoBehaviour
         waveNumber = 0;
         waveCount = level.Waves.Count;
         spawntime = 0f;
-        StageClear = false;
+        SpawnFlag = false;
         //SpawnGoalLine();
     }
 
@@ -88,7 +89,7 @@ public class StageController : MonoBehaviour
 #endif
 
 
-        if (StageClear == true)
+        if (SpawnFlag == false)
         {
             return;
         }
@@ -106,7 +107,7 @@ public class StageController : MonoBehaviour
                 Debug.Log("WaveEnd");
                 StartCoroutine(SpawnGoalLine(4f));
                 //waveNumber = 0;
-                StageClear = true;
+                SpawnFlag = false;
                 
 
             }
@@ -145,8 +146,6 @@ public class StageController : MonoBehaviour
 
         obj.transform.position = new Vector2(11, startPositionY);
 
-
-       
     }
 
     public void CreateFlyObj(FlyObjectData flyObject, int gridNumber)
