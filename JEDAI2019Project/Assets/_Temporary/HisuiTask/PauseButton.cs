@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// ポーズボタンのクラス(押されると消えるボタン)
 public class PauseButton : MonoBehaviour
 {
     private bool pushFlag = false;
@@ -9,7 +10,6 @@ public class PauseButton : MonoBehaviour
     {
         pushFlag = !pushFlag;
         gameObject.SetActive(false);
-        Debug.Log("Push");
     }
 
     public bool GetFlag()
@@ -17,8 +17,14 @@ public class PauseButton : MonoBehaviour
         return pushFlag;
     }
 
-    public bool SetFlag()
+    public void SetFlag(bool flag)
     {
-        return pushFlag = !pushFlag;
+        pushFlag = flag;
+    }
+
+    // フラグ反転
+    public void ReverseFlag()
+    {
+        pushFlag = !pushFlag;
     }
 }

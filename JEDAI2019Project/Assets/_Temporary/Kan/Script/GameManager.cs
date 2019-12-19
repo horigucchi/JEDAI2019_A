@@ -11,7 +11,9 @@ public enum GameState
     StartMenu, InStage, StageClear, GameOver, Pause
 }
 
-
+/// <summary>
+/// ゲーム遷移クラス
+/// </summary>
 public class GameManager : Singleton<GameManager>
 {
     //public static GameManager Instance;
@@ -29,12 +31,13 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     float ResultDelay;
 
-    float levelTime;
+    [SerializeField]
+    private Slider slider = null;
 
     GameState gameState;
 
 
-    public Text clear;
+    public GameObject clear;
     public GameObject RetryButton;
     public GameObject PauseButton;
 
@@ -46,8 +49,7 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
-        levelTime = 0;
-        clear.enabled = false;
+        clear.SetActive(false);
         RetryButton.SetActive(false);
         StartStage();
     }
@@ -64,20 +66,6 @@ public class GameManager : Singleton<GameManager>
             RestartStage();
         }
 
-
-        levelTime = Time.timeSinceLevelLoad;
-
-        if (levelTime >= 14.0f)
-        {
-            //stage.StageClear = true;
-        }
-
-        if (levelTime>= 20.0f)
-        {
-            //GameClear();
-        }
-
-        
     }
 
 
@@ -89,7 +77,7 @@ public class GameManager : Singleton<GameManager>
         gameState = GameState.StageClear;
 
         //クリア文字を表示させる
-        clear.enabled = true;
+        clear.SetActive(true);
 
         //プレイヤーの移動操作をやめさせて
         player.CanMove = false;
@@ -101,19 +89,17 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// プレイヤーが死ぬ時の処理
+    /// ゲームオーバー処理
     /// </summary>
     public void GameOver()
     {
         gameState = GameState.GameOver;
 
-       
-        //
         stage.SpawnFlag = false;
 
         player.GameOver();
 
-        StartCoroutine(ShowResultDelay(ResultDelay, gameState));
+        StartCoroutine(ShowResultDelay(ResultDelay));
 
     } 
 
@@ -126,6 +112,8 @@ public class GameManager : Singleton<GameManager>
         gameState = GameState.InStage;
         SetSpawnState(true);
         StartCoroutine(PlayFrontBGM(BGMDelay));
+        slider.maxValue = GetStageLeftTime();
+        slider.value = 0;
     }
     /// <summary>
     /// ステージを一時停止させる
@@ -152,6 +140,12 @@ public class GameManager : Singleton<GameManager>
     {
         gameState = GameState.InStage;
         stage.ResetStage();
+        slider.maxValue = GetStageLeftTime();
+        slider.value = 0;
+        RetryButton.SetActive(false);
+        Horiguchi.YarnController.Instance.gameObject.SetActive(true);
+        player.Reset();
+        PauseButton.SetActive(true);
     }
 
     /// <summary>
@@ -178,16 +172,21 @@ public class GameManager : Singleton<GameManager>
         BGM.Play("Front");
     }
 
-    IEnumerator ShowResultDelay(float delaySec,GameState state)
+
+    /// <summary>
+    /// リザルト画面を遅延表示させる
+    /// </summary>
+    /// <param name="delaySec">遅延秒数</param>
+    IEnumerator ShowResultDelay(float delaySec)
     {
         yield return new WaitForSeconds(delaySec);
-        switch (state)
+        switch (gameState)
         {
            
             case GameState.StageClear:
                 //TODO:
                 //Show Result
-
+                GameClear();
                 break;
             case GameState.GameOver:
                 //リトライボタンを表示させる
@@ -207,4 +206,9 @@ public class GameManager : Singleton<GameManager>
         
     }
 
+
+    public float GetStageLeftTime()
+    {
+        return stage.GetStageLeftTime();
+    }
 }

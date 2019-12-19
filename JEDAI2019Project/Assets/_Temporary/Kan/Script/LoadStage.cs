@@ -4,7 +4,12 @@ using UnityEngine;
 
 public static class LoadStage
 {
-
+    /// <summary>
+    /// CSVファイルのステージデータを
+    /// </summary>
+    /// <param name="fileName">リソースファイルの名前</param>
+    /// <param name="waves">保存先</param>
+    /// <param name="rowCount"></param>
     public static void LoadStageCSV(string fileName, List<WaveData> waves, int rowCount)
     {
         string dirStageFile = "Stages/" + fileName;

@@ -29,22 +29,28 @@ public class KiteController : AFlyObject
     Text text;
     
     [SerializeField]
-    Vector3 pointOffset;
+    Vector3 pointUIOffset;
 
     public Bounds Bounds { get => bounds; private set => bounds = value; }
     public float Acceleration { get => acceleration; set => acceleration = value; }
 
     public bool CanMove { get; set; }
 
+    [SerializeField]
+    bool Immune;
 
     Animator animator;
 
     [SerializeField]
     Sprite DamagedSprite;
 
+    [SerializeField]
+    Sprite StartSprite;
+
     SpriteRenderer rd;
 
-
+    Vector3 startPosition;
+    float startYD;
 
     void Start()
     {
@@ -62,8 +68,11 @@ public class KiteController : AFlyObject
 
         animator = GetComponentInChildren<Animator>();
         rd = GetComponentInChildren<SpriteRenderer>();
-
+        startPosition = transform.position;
+        startYD = bounds.yD;
         CanMove = true;
+        Immune = false;
+
     }
 
 
@@ -79,13 +88,15 @@ public class KiteController : AFlyObject
             RollCheck();
 #if UNITY_EDITOR
 
-            MoveCheck();
+            KeyBoardCheck();
 #endif
         }
 
+        ///ずっと下にいるとゲームオーバーになる
         if (rb.velocity.y < -15f)
         {
-            GameManager.Instance.GameOver();        }
+            GameManager.Instance.GameOver();        
+        }
 
     }
 
@@ -94,6 +105,18 @@ public class KiteController : AFlyObject
        
     }
 
+
+    public void Reset()
+    {
+        transform.position = startPosition;
+        CanMove = true;
+        Immune = false;
+        rb.velocity = Vector2.zero;
+        bounds.yD = startYD;
+        animator.SetTrigger("Reset");
+        rd.sprite = StartSprite;
+
+    }
     public void RollCheck()
     {
 
@@ -119,7 +142,19 @@ public class KiteController : AFlyObject
         
     }
 
+    /// <summary>
+    /// 風方向に加速させる
+    /// </summary>
+    /// <param name="windDir">風の方向</param>
+    void WindCheck(Vector2 windDir)
+    {
+        AddVelocity(windDir);
+    }
 
+    /// <summary>
+    /// 方向による加速させる
+    /// </summary>
+    /// <param name="direction"></param>
     public void AddVelocity(Vector2 direction)
     {
         
@@ -141,24 +176,26 @@ public class KiteController : AFlyObject
 
         velocity += direction * Acceleration * Time.deltaTime;
 
-        if (direction.x == 0)
-        {
-            velocity.x *= 0.98f;
-        }
-        if (direction.y == 0)
-        {
-            velocity.y *= 0.98f;
-        }
+        //if (direction.x == 0)
+        //{
+        //    velocity.x *= 0.98f;
+        //}
+        //if (direction.y == 0)
+        //{
+        //    velocity.y *= 0.98f;
+        //}
 
         velocity.y = Mathf.Clamp(velocity.y, -30f, 30f);
 
         rb.velocity = velocity;
-        text.text = "Speed:" + (int)velocity.y + " " + /*"加速度:" + acceleration*/ ((int)controller.RollValue / 360f) + "巻く"; 
+        text.text = 　"ゴールまで" + GameManager.Instance.GetStageLeftTime() + "秒" /*"Speed:" + (int)velocity.y*/ + " " + /*"加速度:" + acceleration*/ ((int)controller.RollValue / 360f) + "巻く"; 
 
     }
 
-
-    void MoveCheck()
+    /// <summary>
+    /// [Debug]キーボード処理
+    /// </summary>
+    void KeyBoardCheck()
     {
         float h, v;
         h = Input.GetAxisRaw("Horizontal");
@@ -244,6 +281,8 @@ public class KiteController : AFlyObject
     }
 
 
+    
+
 
     public void GameOver()
     {
@@ -278,11 +317,12 @@ public class KiteController : AFlyObject
         {
             case ObjType.Goal:
 
-
+                obj.GetComponent<GoalLineController>().HitCheck(transform, pointUIOffset);
                 GameManager.Instance.GameClear();
                 break;
             case ObjType.Bird:
 
+                if (Immune) return;
 
                 CanMove = false;
                 bounds.yD = -12;
@@ -297,11 +337,11 @@ public class KiteController : AFlyObject
                 break;
             case ObjType.Ring:
 
-                obj.GetComponent<RingController>().HitCheck(pointOffset);
+                obj.GetComponent<RingController>().HitCheck(pointUIOffset);
                 break;
             case ObjType.RingEX:
 
-                obj.GetComponent<RingExController>().HitCheck(transform,pointOffset);
+                obj.GetComponent<RingExController>().HitCheck(transform,pointUIOffset);
                 break;
             default:
                 break;
