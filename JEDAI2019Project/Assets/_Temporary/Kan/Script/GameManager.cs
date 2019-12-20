@@ -36,8 +36,8 @@ public class GameManager : Singleton<GameManager>
 
     GameState gameState;
 
-
-    public GameObject clearUI;
+    public GameObject ClearUI;
+    public GameObject StageClearUI;
     public GameObject RetryUI;
     public GameObject PauseUI;
     public GameObject PointUI;
@@ -50,7 +50,7 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
-        clearUI.SetActive(false);
+        StageClearUI.SetActive(false);
         RetryUI.SetActive(false);
         //StartStage();
     }
@@ -77,8 +77,15 @@ public class GameManager : Singleton<GameManager>
     {
         gameState = GameState.StageClear;
 
-        //クリア文字を表示させる
-        clearUI.SetActive(true);
+        if(stage.CurrentStage == 1)
+        {
+            //クリア文字を表示させる
+            StageClearUI.SetActive(true);
+        }
+        if(stage.CurrentStage == 2)
+        {
+            ClearUI.SetActive(true);
+        }
 
         //プレイヤーの移動操作をやめさせて
         player.CanMove = false;
@@ -86,7 +93,7 @@ public class GameManager : Singleton<GameManager>
         //凧を画面の右に移動させます
         player.AddVelocity(new Vector2(1, 0));
 
-        PointUI.SetActive(false);
+        //PointUI.SetActive(false);
 
     }
 
@@ -152,7 +159,7 @@ public class GameManager : Singleton<GameManager>
         PauseStage();
         stage.ResetStage();
 
-
+        Pause.Instance.Reset();
         player.Reset();
 
         Horiguchi.YarnController.Instance.gameObject.SetActive(true);
@@ -233,15 +240,26 @@ public class GameManager : Singleton<GameManager>
 
     public void StartStage2()
     {
-
+        Debug.Log("stage2");
         //stage
         PauseStage();
         stage.CurrentStage = 2;
         stage.ResetStage();
         ResumeStage();
 
+        Debug.Log(GetStageLeftTime());
         //ui
+        slider.maxValue = GetStageLeftTime();
+        Pause.Instance.Reset();
+        slider.value = 0f;
 
+        StageClearUI.SetActive(false);
+        PointUI.SetActive(true);
+
+
+
+        //player
+        player.Reset();
 
     }
 }
