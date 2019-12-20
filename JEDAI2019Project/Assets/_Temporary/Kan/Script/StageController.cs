@@ -28,7 +28,7 @@ public class StageController : MonoBehaviour
     LevelData level1;
     LevelData level2;
 
-    LevelData[] Levels = new LevelData[2];
+    //LevelData[] Levels = new LevelData[2];
 
     int waveNumber;
     int waveCount;
@@ -58,14 +58,14 @@ public class StageController : MonoBehaviour
 
 
         level1 = ScriptableObject.CreateInstance<LevelData>();
-        //level2 = ScriptableObject.CreateInstance<LevelData>();
+        level2 = ScriptableObject.CreateInstance<LevelData>();
 
 
         
         LoadStage.LoadStageCSV(Stage1DataName, level1.Waves, 5);
         //stagenumbers.Add(1, level1);
         
-        //LoadStage.LoadStageCSV(Stage2DataName, level2.Waves, 5);
+        LoadStage.LoadStageCSV(Stage2DataName, level2.Waves, 5);
         //stagenumbers.Add(2, level2);
         
         
@@ -135,7 +135,14 @@ public class StageController : MonoBehaviour
             //SpawnWave(waves[waveNumber]);
             //SpawnWave(stagenumbers[CurrentStage].Waves[waveNumber]);
             //SpawnWave(Levels[CurrentStage-1].Waves[waveNumber]);
-            SpawnWave(level1.Waves[waveNumber]);
+            if(CurrentStage == 1)
+            {
+                SpawnWave(level1.Waves[waveNumber]);
+            }
+            if(CurrentStage == 2)
+            {
+                SpawnWave(level2.Waves[waveNumber]);
+            }
             waveNumber += 1;
             spawntime = 0f;
             if (waveNumber > waveCount - 1)
@@ -239,7 +246,14 @@ public class StageController : MonoBehaviour
     public void ResetStage()
     {
         waveNumber = 0;
-        waveCount = level1.Waves.Count;
+        if (CurrentStage == 1)
+        {
+            waveCount = level1.Waves.Count;
+        }
+        if(CurrentStage == 2)
+        {
+            waveCount = level2.Waves.Count;
+        }
         totalLevelTime = spawnrate * waveCount + goalLineSpawnDelay;
         leftLevelTime = totalLevelTime;
         levelTime = 0f;

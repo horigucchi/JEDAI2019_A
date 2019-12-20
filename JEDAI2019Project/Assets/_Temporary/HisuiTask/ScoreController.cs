@@ -34,9 +34,10 @@ public class ScoreController : Horiguchi.Engine.Singleton<ScoreController>
     public Vector2 pos;
     public GameObject gb;
 
-    public void GetTime()
+    private void OnEnable()
     {
-
+        SCORE_NUM = 0;
+        DrawScore = 0;
     }
 
     void Start()
@@ -145,6 +146,13 @@ public class ScoreController : Horiguchi.Engine.Singleton<ScoreController>
     public int GetScore()
     {
         return SCORE_NUM;
+    }
+
+    // スコアを消す
+    public void ScoreClear()
+    {
+        SCORE_NUM = 0;
+        DrawScore = 0;
     }
 
     // スコア加算をする

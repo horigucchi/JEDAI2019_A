@@ -37,9 +37,9 @@ public class GameManager : Singleton<GameManager>
     GameState gameState;
 
 
-    public GameObject clear;
-    public GameObject RetryButton;
-    public GameObject PauseButton;
+    public GameObject clearUI;
+    public GameObject RetryUI;
+    public GameObject PauseUI;
     public GameObject PointUI;
 
     //private void Awake()
@@ -50,8 +50,8 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
-        clear.SetActive(false);
-        RetryButton.SetActive(false);
+        clearUI.SetActive(false);
+        RetryUI.SetActive(false);
         //StartStage();
     }
 
@@ -78,7 +78,7 @@ public class GameManager : Singleton<GameManager>
         gameState = GameState.StageClear;
 
         //クリア文字を表示させる
-        clear.SetActive(true);
+        clearUI.SetActive(true);
 
         //プレイヤーの移動操作をやめさせて
         player.CanMove = false;
@@ -146,16 +146,23 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void RestartStage()
     {
+        //
         gameState = GameState.InStage;
+        //
+        PauseStage();
         stage.ResetStage();
+
+
         player.Reset();
 
         Horiguchi.YarnController.Instance.gameObject.SetActive(true);
         slider.maxValue = GetStageLeftTime();
         slider.value = 0;
-        RetryButton.SetActive(false);
-        PauseButton.SetActive(true);
-        SetSpawnState(true);
+        RetryUI.SetActive(false);
+        PauseUI.SetActive(true);
+
+        ResumeStage();
+
         PointUI.SetActive(true);
     }
 
@@ -201,9 +208,9 @@ public class GameManager : Singleton<GameManager>
                 break;
             case GameState.GameOver:
                 //リトライボタンを表示させる
-                RetryButton.SetActive(true);
+                RetryUI.SetActive(true);
                 //一時停止ボタンを隠させる
-                PauseButton.SetActive(false);
+                PauseUI.SetActive(false);
                 //Rollerを隠させる
                 Horiguchi.YarnController.Instance.gameObject.SetActive(false);
 
@@ -221,5 +228,20 @@ public class GameManager : Singleton<GameManager>
     public float GetStageLeftTime()
     {
         return stage.GetStageLeftTime();
+    }
+
+
+    public void StartStage2()
+    {
+
+        //stage
+        PauseStage();
+        stage.CurrentStage = 2;
+        stage.ResetStage();
+        ResumeStage();
+
+        //ui
+
+
     }
 }

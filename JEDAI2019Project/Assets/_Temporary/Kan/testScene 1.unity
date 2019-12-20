@@ -380,8 +380,10 @@ MonoBehaviour:
   controller: {fileID: 368921504}
   roller: {fileID: 1366020163}
   text: {fileID: 1824125537}
-  pointOffset: {x: 0, y: 1.5, z: 0}
+  pointUIOffset: {x: 0, y: 0, z: 0}
+  Immune: 0
   DamagedSprite: {fileID: 0}
+  StartSprite: {fileID: 0}
 --- !u!50 &191965003
 Rigidbody2D:
   serializedVersion: 4
@@ -1142,6 +1144,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3040210561512163228, guid: 7563fb2b08b93bd43a97834254bfc140,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2718916371075484003, guid: 7563fb2b08b93bd43a97834254bfc140,
         type: 3}
       propertyPath: m_Color.r
@@ -1156,11 +1163,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0.9575472
-      objectReference: {fileID: 0}
-    - target: {fileID: 3040210561512163228, guid: 7563fb2b08b93bd43a97834254bfc140,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7563fb2b08b93bd43a97834254bfc140, type: 3}
@@ -1305,7 +1307,9 @@ MonoBehaviour:
   Background: {fileID: 398100055}
   scrollSpeed: 1
   GoalLine: {fileID: 11400000, guid: 2857e077be9542542aac1a1245777364, type: 2}
-  StageDataName: "JEDAI2019_A - 60\u79D2\u30B9\u30C6\u30FC\u30B8"
+  goalLineSpawnDelay: 0
+  Stage1DataName: 
+  Stage2DataName: 
 --- !u!114 &455640802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1323,9 +1327,11 @@ MonoBehaviour:
   BGM: {fileID: 1077865986}
   BGMDelay: 2
   ResultDelay: 2
-  clear: {fileID: 1311436009}
+  slider: {fileID: 0}
+  clear: {fileID: 0}
   RetryButton: {fileID: 744191096}
   PauseButton: {fileID: 62956258}
+  PointUI: {fileID: 0}
 --- !u!1 &619623437
 GameObject:
   m_ObjectHideFlags: 0
@@ -1566,6 +1572,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816997367640454462, guid: 1178f34a9a322264687257af0a724618,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158852020335919893, guid: 1178f34a9a322264687257af0a724618,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1178f34a9a322264687257af0a724618, type: 3}
