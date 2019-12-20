@@ -7,6 +7,9 @@ using UnityEngine.UI;
 // ポーズ画面のクラス
 public class Pause : MonoBehaviour
 {
+    public static Pause Instance;
+
+
     [SerializeField]
     private Slider slider = null;
     // 必要なオブジェクト
@@ -20,6 +23,15 @@ public class Pause : MonoBehaviour
     // スライダーの値変更用
     private float val = 0;
 
+    public void Reset()
+    {
+        val = 0;
+    }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         // オブジェクトの取得
