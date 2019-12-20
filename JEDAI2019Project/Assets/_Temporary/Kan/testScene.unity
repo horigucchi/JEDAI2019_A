@@ -1493,7 +1493,7 @@ MonoBehaviour:
   BGMDelay: 2
   ResultDelay: 6
   slider: {fileID: 870424297}
-  ClearUI: {fileID: 0}
+  ClearUI: {fileID: 2108017126}
   StageClearUI: {fileID: 1590139426}
   RetryUI: {fileID: 1813841100}
   PauseUI: {fileID: 538187142}
@@ -8425,6 +8425,12 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2108017126 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6910099861720685883, guid: e1c2e892718c8a447a03ec3d4c179cb7,
+    type: 3}
+  m_PrefabInstance: {fileID: 159504301}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1464645510903402011
 PrefabInstance:
   m_ObjectHideFlags: 0
