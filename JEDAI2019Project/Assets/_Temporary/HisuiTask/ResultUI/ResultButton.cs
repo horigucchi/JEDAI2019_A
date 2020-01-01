@@ -16,4 +16,6 @@ public class ResultButton : MonoBehaviour
         GameManager.Instance.RestartStage();
         //SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
     }
+
+    
 }

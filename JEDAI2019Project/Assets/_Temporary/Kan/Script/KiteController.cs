@@ -93,10 +93,10 @@ public class KiteController : AFlyObject
         }
 
         ///ずっと下にいるとゲームオーバーになる
-        if (rb.velocity.y < -15f)
-        {
-            GameManager.Instance.GameOver();        
-        }
+        //if (rb.velocity.y < -15f)
+        //{
+        //    GameManager.Instance.GameOver();        
+        //}
 
     }
 
